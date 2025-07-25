@@ -2,10 +2,12 @@ import { PenSquareIcon, Trash2Icon } from 'lucide-react';
 import { Link } from "react-router";
 import { formatDate } from '../lib/utils';
 import api from '../lib/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import toast from 'react-hot-toast';
 import GoalsList from '../pages/GoalsList';
 
 const EntryCard = ({entry, setEntries, entryIndex}) => {
+    const axiosPrivate = useAxiosPrivate();
 
 const handleDelete = async (e, id) => {
     e.preventDefault();
@@ -13,7 +15,7 @@ const handleDelete = async (e, id) => {
     if (!window.confirm("Are you sure you want to delete this entry?")) return;
 
     try {
-        await api.delete(`/entries/${id}`);
+        await axiosPrivate.delete(`/entries/${id}`);
         setEntries((prev) => prev.filter(entry => entry._id !== id));
         toast.success("Entry deleted successfully");
     } catch (error) {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router";
 import api from "../lib/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { LoaderIcon, ArrowLeftIcon, Trash2Icon } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -11,9 +12,10 @@ const ActivityDetailPage = () => {
   const [loading,setLoading] = useState(true);
   const [saving,setSaving] = useState(false);
   const [goals, setGoals] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
 
   const fetchGoals = async() => {
-          const res = await api.get("/goals");
+          const res = await axiosPrivate.get("/goals");
           console.log(res.data);
           setGoals(res.data);
   }
@@ -37,7 +39,7 @@ const ActivityDetailPage = () => {
   useEffect(() => {
     const fetchActivity = async() => {
       try {
-        const res = await api.get(`/activities/${id}`);
+        const res = await axiosPrivate.get(`/activities/${id}`);
         setActivity(res.data);
       } catch (error) {
         console.log("Error in fetching the activity", error);
@@ -53,7 +55,7 @@ const handleDelete = async () => {
   if (!window.confirm("Are you sure you want to delete this activity?")) return;
 
   try {
-    await api.delete(`/activities/${id}`);
+    await axiosPrivate.delete(`/activities/${id}`);
     toast.success("Activity deleted");
     navigate("/activities");
   } catch (error) {
@@ -71,7 +73,7 @@ const handleSave = async () => {
 
   try {
     // await api.put(`/activities/${id}`, activity);
-    await api.put(`/activities/${id}`, {
+    await axiosPrivate.put(`/activities/${id}`, {
       activity,
       name,
       goalID,

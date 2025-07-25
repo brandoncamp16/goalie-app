@@ -4,6 +4,7 @@ import RateLimitedUI from '../components/RateLimitedUI';
 import { useEffect } from 'react';
 import GoalCard from '../components/GoalCard';
 import api from '../lib/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import toast from 'react-hot-toast';
 import GoalsNotFound from '../components/GoalsNotFound';
 
@@ -11,11 +12,12 @@ const GoalsPage = () => {
     const [isRateLimited, setIsRateLimited] = useState(false);
     const [goals,setGoals] = useState([]);
     const [loading,setLoading] = useState(true);
+    const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
         const fetchGoals = async () => {
             try {
-                const res = await api.get("/goals");
+                const res = await axiosPrivate.get("/goals");
                 console.log(res.data);
                 setGoals(res.data);
                 setIsRateLimited(false);

@@ -37,17 +37,18 @@ app.use(express.json());
 app.use(cookieParser());
 // app.use(rateLimiter);
 
-
 app.use("/api/register", registerRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/refresh", refreshRoutes);
 app.use("/api/logout", logoutRoutes);
 
+app.use(verifyJWT);
+
 app.use("/api/entries", entriesRoutes);
 app.use("/api/goals", goalsRoutes);
 app.use("/api/activities", activitiesRoutes);
 
-app.use(verifyJWT);
+
 
 
 

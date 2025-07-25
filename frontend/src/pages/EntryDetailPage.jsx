@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router";
 import api from "../lib/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { LoaderIcon, ArrowLeftIcon, Trash2Icon } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -10,9 +11,10 @@ const EntryDetailPage = () => {
   const [saving,setSaving] = useState(false);
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
 
   const fetchActivities = async() => {
-    const res = await api.get("/activities");
+    const res = await axiosPrivate.get("/activities");
     // console.log(res.data);
     setActivities(res.data);
   }
@@ -37,7 +39,7 @@ const EntryDetailPage = () => {
   useEffect(() => {
     const fetchEntry = async() => {
       try {
-        const res = await api.get(`/entries/${id}`);
+        const res = await axiosPrivate.get(`/entries/${id}`);
         setEntry(res.data);
       } catch (error) {
         console.log("Error in fetching the entry", error);
@@ -58,7 +60,7 @@ const handleDelete = async () => {
   if (!window.confirm("Are you sure you want to delete this entry?")) return;
 
   try {
-    await api.delete(`/entries/${id}`);
+    await axiosPrivate.delete(`/entries/${id}`);
     toast.success("Entry deleted");
     navigate("/");
   } catch (error) {
@@ -75,7 +77,7 @@ const handleSave = async () => {
   setSaving(true);
 
   try {
-    await api.put(`/entries/${id}`, entry);
+    await axiosPrivate.put(`/entries/${id}`, entry);
     toast.success("Entry updated successfully");
     navigate("/");
   } catch (error) {

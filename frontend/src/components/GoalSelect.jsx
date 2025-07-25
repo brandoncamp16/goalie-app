@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import api from "../lib/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function GoalSelect() {
     const [goals, setGoals] = useState([]);
     const [selectedGoal, setSelectedGoal] = useState('')
+    const axiosPrivate = useAxiosPrivate();
 
     const fetchGoals = async() => {
-            const res = await api.get("/goals");
+            const res = await axiosPrivate.get("/goals");
             console.log(res.data);
             setGoals(res.data);
     }

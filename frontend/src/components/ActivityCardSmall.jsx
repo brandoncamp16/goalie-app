@@ -2,9 +2,11 @@ import { PenSquareIcon, Trash2Icon } from 'lucide-react';
 import { Link } from "react-router";
 import { formatDate } from '../lib/utils';
 import api from '../lib/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import toast from 'react-hot-toast';
 
 const ActivityCard = ({activity,setActivities}) => {
+    const axiosPrivate = useAxiosPrivate();
 
 const handleDelete = async (e, id) => {
     e.preventDefault();
@@ -12,7 +14,7 @@ const handleDelete = async (e, id) => {
     if (!window.confirm("Are you sure you want to delete this activity?")) return;
 
     try {
-        await api.delete(`/activities/${id}`);
+        await axiosPrivate.delete(`/activities/${id}`);
         setActivities((prev) => prev.filter(activity => activity._id !== id));
         toast.success("Activity deleted successfully");
     } catch (error) {

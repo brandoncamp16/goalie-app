@@ -4,6 +4,7 @@ import RateLimitedUI from '../components/RateLimitedUI';
 import { useEffect } from 'react';
 import ActivityCard from '../components/ActivityCard';
 import api from '../lib/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import toast from 'react-hot-toast';
 import ActivitiesNotFound from '../components/ActivitiesNotFound';
 
@@ -11,11 +12,12 @@ const ActivitiesPage = () => {
     const [isRateLimited, setIsRateLimited] = useState(false);
     const [activities,setActivities] = useState([]);
     const [loading,setLoading] = useState(true);
+    const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
         const fetchActivities = async () => {
             try {
-                const res = await api.get("/activities");
+                const res = await axiosPrivate.get("/activities");
                 console.log(res.data);
                 setActivities(res.data);
                 setIsRateLimited(false);

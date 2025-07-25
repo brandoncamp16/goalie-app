@@ -3,6 +3,7 @@ import RateLimitedUI from '../components/RateLimitedUI';
 import { useEffect } from 'react';
 import ActivityCardSmall from '../components/ActivityCardSmall';
 import api from '../lib/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import toast from 'react-hot-toast';
 
 const ActivitiesList = ({goalIndex, entryIndex}) => {
@@ -13,12 +14,13 @@ const ActivitiesList = ({goalIndex, entryIndex}) => {
     const [entries,setEntries] = useState([]);
     const [filteredEntries,setFilteredEntries] = useState([]);
     const [loading,setLoading] = useState(true);
+    const axiosPrivate = useAxiosPrivate();
     
 
     useEffect(() => {
         const fetchActivities = async () => {
             try {
-                const res = await api.get("/activities");
+                const res = await axiosPrivate.get("/activities");
                 // console.log(res.data);
                 setActivities(res.data);
                 setIsRateLimited(false);
@@ -38,7 +40,7 @@ const ActivitiesList = ({goalIndex, entryIndex}) => {
 
         const fetchGoals = async () => {
             try {
-                const res = await api.get("/goals");
+                const res = await axiosPrivate.get("/goals");
                 // console.log(res.data);
                 setGoals(res.data);
                 setIsRateLimited(false);
@@ -58,7 +60,7 @@ const ActivitiesList = ({goalIndex, entryIndex}) => {
 
         const fetchEntries = async () => {
             try {
-                const res = await api.get("/entries");
+                const res = await axiosPrivate.get("/entries");
                 setEntries(res.data);
                 setIsRateLimited(false);
             } catch (error) {
@@ -77,11 +79,11 @@ const ActivitiesList = ({goalIndex, entryIndex}) => {
 
         const filterActivities = async () => {
             try {
-                const activityRes = await api.get("/activities");
+                const activityRes = await axiosPrivate.get("/activities");
                 const activityData = activityRes.data;
-                const goalRes = await api.get("/goals");
+                const goalRes = await axiosPrivate.get("/goals");
                 const goalData = goalRes.data;
-                const entryRes = await api.get("/entries");
+                const entryRes = await axiosPrivate.get("/entries");
                 const entryData = entryRes.data;
                 const entryFilter = entryData.map(itemEntryData => { return itemEntryData.selectedActivities; });
                 const filteredEntries = activityData.filter(itemActivityData => entryFilter[entryIndex].includes(itemActivityData._id));

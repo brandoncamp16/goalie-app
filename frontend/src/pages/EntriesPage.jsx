@@ -4,6 +4,7 @@ import RateLimitedUI from '../components/RateLimitedUI';
 import { useEffect } from 'react';
 import EntryCard from '../components/EntryCard';
 import api from '../lib/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import toast from 'react-hot-toast';
 import EntriesNotFound from '../components/EntriesNotFound';
 
@@ -14,11 +15,12 @@ const EntriesPage = () => {
     const [entries,setEntries] = useState([]);
     const [loading,setLoading] = useState(true);
     const [entryIndex] = useState([0]);
+    const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
         const fetchEntries = async () => {
             try {
-                const res = await api.get("/entries");
+                const res = await axiosPrivate.get("/entries");
                 setEntries(res.data);
                 setIsRateLimited(false);
             } catch (error) {

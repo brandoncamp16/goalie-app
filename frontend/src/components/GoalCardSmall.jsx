@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Link } from "react-router";
 import ActivitiesList from '../pages/ActivitiesList';
 import api from '../lib/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import RateLimitedUI from '../components/RateLimitedUI';
 import toast from 'react-hot-toast';
 
@@ -13,12 +14,13 @@ const GoalCardSmall = ({goal, goalIndex, entryIndex, filteredEntries, goalFilter
     const [goals,setGoals] = useState([]);
     const [entries,setEntries] = useState([]);
     const [loading,setLoading] = useState(true);
+    const axiosPrivate = useAxiosPrivate();
     
 
     useEffect(() => {
         const fetchActivities = async () => {
             try {
-                const res = await api.get("/activities");
+                const res = await axiosPrivate.get("/activities");
                 // console.log(res.data);
                 setActivities(res.data);
                 setIsRateLimited(false);
@@ -38,7 +40,7 @@ const GoalCardSmall = ({goal, goalIndex, entryIndex, filteredEntries, goalFilter
 
         const fetchGoals = async () => {
             try {
-                const res = await api.get("/goals");
+                const res = await axiosPrivate.get("/goals");
                 // console.log(res.data);
                 setGoals(res.data);
                 setIsRateLimited(false);
@@ -58,7 +60,7 @@ const GoalCardSmall = ({goal, goalIndex, entryIndex, filteredEntries, goalFilter
 
         const fetchEntries = async () => {
             try {
-                const res = await api.get("/entries");
+                const res = await axiosPrivate.get("/entries");
                 setEntries(res.data);
                 setIsRateLimited(false);
             } catch (error) {

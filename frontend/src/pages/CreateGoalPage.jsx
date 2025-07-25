@@ -3,11 +3,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
 import api from "../lib/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const CreateGoalPage = () => {
   const [name, setTitle] = useState("");
-
   const [loading, setLoading] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ const CreateGoalPage = () => {
 
     setLoading(true);
     try {
-      await api.post("/goals", {
+      await axiosPrivate.post("/goals", {
         name,
       });
 

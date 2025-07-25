@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
 import api from "../lib/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const CreateEntryPage = () => {
   const [title, setTitle] = useState("");
@@ -10,9 +11,10 @@ const CreateEntryPage = () => {
   const [loading, setLoading] = useState(false);
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
 
   const fetchActivities = async() => {
-    const res = await api.get("/activities");
+    const res = await axiosPrivate.get("/activities");
     // console.log(res.data);
     setActivities(res.data);
   }
@@ -45,7 +47,7 @@ const CreateEntryPage = () => {
 
     setLoading(true);
     try {
-      await api.post("/entries", {
+      await axiosPrivate.post("/entries", {
         title,
         content,
         selectedActivities,

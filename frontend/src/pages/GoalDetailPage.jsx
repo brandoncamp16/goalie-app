@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router";
 import api from "../lib/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { LoaderIcon, ArrowLeftIcon, Trash2Icon } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -8,6 +9,7 @@ const GoalDetailPage = () => {
   const [goal,setGoal] = useState(null);
   const [loading,setLoading] = useState(true);
   const [saving,setSaving] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   const navigate = useNavigate();
 
@@ -16,7 +18,7 @@ const GoalDetailPage = () => {
   useEffect(() => {
     const fetchGoal = async() => {
       try {
-        const res = await api.get(`/goals/${id}`);
+        const res = await axiosPrivate.get(`/goals/${id}`);
         setGoal(res.data);
       } catch (error) {
         console.log("Error in fetching the goal", error);
@@ -32,7 +34,7 @@ const handleDelete = async () => {
   if (!window.confirm("Are you sure you want to delete this goal?")) return;
 
   try {
-    await api.delete(`/goals/${id}`);
+    await axiosPrivate.delete(`/goals/${id}`);
     toast.success("Goal deleted");
     navigate("/goals");
   } catch (error) {
@@ -49,7 +51,7 @@ const handleSave = async () => {
   setSaving(true);
 
   try {
-    await api.put(`/goals/${id}`, goal);
+    await axiosPrivate.put(`/goals/${id}`, goal);
     toast.success("Goal updated successfully");
     navigate("/goals");
   } catch (error) {

@@ -2,9 +2,11 @@ import { PenSquareIcon, Trash2Icon } from 'lucide-react';
 import { Link } from "react-router";
 import { formatDate } from '../lib/utils';
 import api from '../lib/axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import toast from 'react-hot-toast';
 
 const GoalCard = ({goal,setGoals}) => {
+    const axiosPrivate = useAxiosPrivate();
 
 const handleDelete = async (e, id) => {
     e.preventDefault();
@@ -12,7 +14,7 @@ const handleDelete = async (e, id) => {
     if (!window.confirm("Are you sure you want to delete this goal?")) return;
 
     try {
-        await api.delete(`/goals/${id}`);
+        await axiosPrivate.delete(`/goals/${id}`);
         setGoals((prev) => prev.filter(goal => goal._id !== id));
         toast.success("Goal deleted successfully");
     } catch (error) {
