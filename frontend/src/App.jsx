@@ -15,6 +15,7 @@ import Layout from './components/Layout';
 import RequireAuth from './components/RequireAuth';
 import Unauthorized from './components/Unauthorized';
 import Missing from './components/Missing';
+import AdminPage from './pages/AdminPage';
 
 const ROLES = {
   'User': 2001,
@@ -31,7 +32,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          {/* Private Routes */}
+          {/* Private User Routes */}
           <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]}/>}>
             <Route path="/" element={<EntriesPage />} />
             <Route path="/goals" element={<GoalsPage />} />
@@ -44,7 +45,10 @@ const App = () => {
             <Route path="/activities/:id" element={<ActivityDetailPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
-
+          {/* Private Admin Routes */}
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]}/>}>
+            <Route path="/admin" element={<AdminPage />} />
+          </Route>
           {/* Other Routes */}
           <Route path="/missing" element={<Missing />} />
         </Route>

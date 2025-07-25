@@ -3,6 +3,7 @@ import { PlusIcon } from 'lucide-react'
 import { CalendarDays } from 'lucide-react'
 import { Settings } from 'lucide-react'
 import { LogOut } from 'lucide-react'
+import { ShieldUser } from 'lucide-react'
 
 const Navbar = () => {
   return (
@@ -26,6 +27,10 @@ const Navbar = () => {
                     <Link to={"/settings"} className='btn btn-primary'>
                         <Settings className='size-5'/>
                         <span>Settings</span>
+                    </Link>
+                    <Link to={"/admin"} className='btn btn-primary'>
+                        <ShieldUser className='size-5'/>
+                        <span>Admin Panel</span>
                     </Link>
                     <Link to={"/login"} className='btn btn-primary'>
                         <LogOut className='size-5'/>
